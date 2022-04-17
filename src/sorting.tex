@@ -1,19 +1,7 @@
 \section{Sorting}
 
 \subsection{Bubble Sort}
-\emph{Repeatedly swaps adjacent elements that are out of order until there are no swaps in an iteration or after $n$ iterations.}
-
-\begin{lstlisting}[
-    mathescape,
-    columns=fullflexible,
-    basicstyle=\fontfamily{lmvtt}\selectfont,
-  ]
-bubble_sort(A, n):
-    for i in range(n - 1): // or no swaps
-        for j in range(0, n - i - 1):
-            if A[j] > A[j + 1]:
-                swap(A[j], A[j + 1])
-\end{lstlisting}
+\emph{Repeatedly swaps adjacent elements that are out of order until there are no swaps in an iteration, or after $n$ iterations.}
 
 At the end of iteration $j$, the largest $j$ items are correctly sorted in the final $j$ positions of the array.
 
@@ -22,37 +10,11 @@ In the best case of a sorted array, this takes $O(n)$, and $O(n^2)$ otherwise. B
 \subsection{Selection Sort}
 \emph{Maintains a sorted prefix, and repeatedly finds the smallest element in the unsorted remainder and swaps it with the first element in the remainder.}
 
-\begin{lstlisting}[
-    mathescape,
-    columns=fullflexible,
-    basicstyle=\fontfamily{lmvtt}\selectfont,
-  ]
-selection_sort(A, n):
-    repeat i in range(n - 1):
-        j = argmin(A[i : n])
-        swap(A[i], A[j])
-\end{lstlisting}
-
 At the end of iteration $i$, the smallest $i$ items are correctly sorted in the final $i$ positions of the array.
 In all cases, this takes $O(n^2)$ comparisons, and is unstable.
 
 \subsection{Insertion Sort}
 \emph{Maintains a sorted prefix, and repeatedly inserts unsorted elements into the correct place in the sorted prefix.}
-
-\begin{lstlisting}[
-    mathescape,
-    columns=fullflexible,
-    basicstyle=\fontfamily{lmvtt}\selectfont,
-  ]
-insertion_sort(A, n):
-    repeat i in range(1, n):
-        key = A[i]
-        j = i - 1
-        while j > 0 and A[j] > key: // insert
-            A[j + 1] = A[j]
-            j = j - 1
-        A[j + 1] = key
-\end{lstlisting}
 
 At the end of iteration $i$, the first $i$ items are in sorted order.
 In the best case of a sorted array, this takes $O(n)$, in the average case of a random permutation $\theta(n^2)$,

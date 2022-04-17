@@ -92,7 +92,7 @@ First, number every vertex from 1 to $|V|$.
 \subsection{Partitioning (Rod Cutting)}
 \emph{Given a rod of length $L \in \mathbb{Z}^+$ and a value $v(l)$ for a rod of length $l \in [1, \; L]$, what is the max-value partition for the rod?}
 
-\textbf{S}: $X(l) = $ max-value partition of length $l \forall l \in [0, L]$
+\textbf{S}: $X(l) = $ max-value partition of length $l, \; \forall l \in [0, L]$
 
 \textbf{R}: $X(l) = \max \{ v(p) + X(l - p) \; | \; 1 \leq p \leq l\}$
 
@@ -104,12 +104,10 @@ First, number every vertex from 1 to $|V|$.
 
 \textbf{T}: $\theta(L) \text{ subproblems} \cdot \theta(|L|) \text{ choices} = \theta(|L|^2)$
 
-This problem runs in polynomial time, but the next problem will run in \textbf{psuedo-polynomial} time.
-
 \subsection{Subset Sum}
 \emph{Given a multiset $A = \{ a_0, a_1, \dots, a_{n-1} \}$ with $n$ positive integers, and a target sum $T$, does any subset $S \subseteq A$ sum to $T$?}
 
-This is an example of a \textbf{decision problem} where the answer is binary.
+This is a \textbf{decision problem} where the answer is binary.
 
 \textbf{S}: $X(i, t) = $ does any subset $S \subseteq A[i:]$ sum to $T \linebreak \forall i \in [0, n] \; \forall t \in [0, T]$?\\[-0.2em]
 \[ \textbf{R}\text{: } X(i, t) = \operatorname{OR} \begin{cases} 
@@ -128,3 +126,5 @@ This is an example of a \textbf{decision problem} where the answer is binary.
 \textbf{O}: $X(0, T)$
 
 \textbf{T}: $\theta(nT)$
+
+This runs in \textbf{psuedo-polynomial} time.
