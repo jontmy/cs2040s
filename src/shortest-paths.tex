@@ -1,0 +1,79 @@
+\section{Shortest Paths}
+
+\subsection{Bellman-Ford Algorithm}
+\emph{Computes the shortest path for graphs with negative weights.
+Can be used to detect negative weight cycles.}
+
+Let $\delta(u, v)$ be the weight of the shortest path from $u$ to $v$.
+By the triangle inequality, $\delta(s, v) \leq \delta(s, u) + \delta(u, v)$.
+
+For each vertex $v$, we maintain an estimate $d(v)$ of the distance from a source $s$, and a parent pointer $\pi(v)$.
+All estimates are initialized to $\infty$, and $d(s) = 0$.
+
+The algorithm performs $|V| - 1$ iterations over the graph, during which each edge is relaxed:
+
+\begin{lstlisting}[
+    mathescape,
+    columns=fullflexible,
+    basicstyle=\fontfamily{lmvtt}\selectfont,
+  ]
+relax(u, v):
+    if d(v) $>$ d(u) + weight(u, v):
+        d(v) = d(u) + weight(u, v)
+        $\pi$(v) = u
+\end{lstlisting}
+
+Relaxation mainatains the invariant $d(v) \geq \delta(s, v) \; \forall v \in V$, i.e., we never under-estimate.
+
+If an entire iteration does not change any estimates, then we can terminate early.
+After $n$ iterations, the $n$-hop estimate on the shortest path (not every path!) is correct, i.e., $d(v_n) = \delta(s, v_n)$
+
+Also, if $P$ is the shortest path from $s$ to $v$, and if $P$ goes through $u$, then $P$ is also the shortest
+path from $s$ to $u$.
+
+If we run a $|V|$-th iteration and the estimates still change, then we have found a negative weight cycle.
+
+This algorithm has a time complexity of \textbf{O(EV)}.
+
+\subsection{Dijkstra's Algorithm}
+\emph{Computes the shortest path for graphs with only non-negative weights, including cyclic graphs.}
+
+For each vertex $v$, we maintain the distance $d(v)$ from a source $s$, and a parent pointer $\pi(v)$.
+
+We also maintain a priority queue $Q$ of vertices ordered by their distance $s$, i.e. the $d$-values.
+$d(s)$ is initialized to 0.
+
+\begin{lstlisting}[
+    mathescape,
+    columns=fullflexible,
+    basicstyle=\fontfamily{lmvtt}\selectfont,
+  ]
+dijkstra():
+    initialize()  // O(|V| log |V|)
+    while Q is not empty: // O(|V|)
+        u = extract_min(Q)  // O(log |V|)
+        for each edge (u, v):  // O(|E|)
+            relax(u, v)  // O(log |V|)
+\end{lstlisting}
+
+The relax operation is the same as in the Bellman-Ford algorithm, 
+except that \code{decrease-key} is used to update the $d$-values.
+
+The time complexity of this algorithm with an AVL tree is \textbf{O(E log V)},
+but \textbf{O(E + V log V)} with a Fibonacci heap.
+The complexities are simplified as $|E| = \theta(|V|^2)$.
+
+Graphs can be reweighted by multiplying the edge weights by a constant factor,
+but addition by a constant factor will break Dijkstra's algorithm.
+
+We can also find the longest path by negating the edge weights, as long as the graph is acyclic.
+
+If we wanted to find the path with shortest weight products rather than sum,
+it is easier to take the logarithm of the weights, rather than modify the relax operation.
+
+\subsection{Relaxation in Topological Order}
+\emph{Computes the shortest path for directed acyclic graphs.}
+
+Since the path is relaxed in order, the distance is correct after relaxation.
+
+This has a time complexity of \textbf{O(V + E)}.

@@ -1,0 +1,42 @@
+\section{Graphs}
+
+\subsection{Topological Sort}
+A \textbf{topological sort} imposes a total ordering on all vertices, such that edges only point foward.
+
+Only \textbf{directed acyclic graphs} have a topological order.
+Topological order is \textbf{not unique}.
+
+\subsubsection{Post-order Depth-first Search}
+Vertices are prepended to the list only after all of their children have been visited.
+
+\subsubsection{Kahn's Algorithm}
+Removes vertices without dependencies from the graph.
+
+Each vertex tracks their in-degree, and is enqueued when it reaches zero.
+When dequeued, the vertex is removed and its children's in-degrees are decremented.
+
+Both algorithms have a time complexity of \textbf{O(V + E)} and a space complexity of \textbf{O(V)}.
+
+\subsection{Connected Components}
+Vertices $v$ and $w$ are in the same \textbf{connected component} iff there is a path from $v$ to $w$.
+
+Iterate over each vertex, and if it is unvisited, perform either BFS or DFS to flood-fill.
+This has a time complexity of \textbf{O(V + E)}.
+
+In the case of a directed graph, $v$ and $w$ are in the same \textbf{strongly connected component}
+iff there is a path from $v$ to $w$ and also from $w$ to $v$.
+
+\subsubsection{Kosaraju's Algorithm}
+On the first pass, maintain a set of visited vertices and a stack of finished vertices.
+Explore vertices with DFS, pushing onto the stack when all of their children have been visited.
+
+On the second pass, reverse the graph. Pop a vertex from the stack and flood-fill with DFS to get the SCC.
+Pop vertices from the stack until we get an unvisited vertex, then repeat the previous step.
+
+This has a time complexity of \textbf{O(V + E)}, and a space complexity of \textbf{O(V)}.
+
+\subsection{Cycle Detection}
+A \textbf{cycle} is a path that visits a vertex more than once.
+
+In a directed graph, keep parent pointers and sets for unvisited, visiting, and visited vertices.
+Flood fill vertices with DFS, and if we find a vertex in the visiting set, then there is a cycle.

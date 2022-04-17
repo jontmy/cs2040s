@@ -1,0 +1,126 @@
+\section{Sorting}
+
+\subsection{Bubble Sort}
+\emph{Repeatedly swaps adjacent elements that are out of order until there are no swaps in an iteration or after $n$ iterations.}
+
+\begin{lstlisting}[
+    mathescape,
+    columns=fullflexible,
+    basicstyle=\fontfamily{lmvtt}\selectfont,
+  ]
+bubble_sort(A, n):
+    for i in range(n - 1): // or no swaps
+        for j in range(0, n - i - 1):
+            if A[j] > A[j + 1]:
+                swap(A[j], A[j + 1])
+\end{lstlisting}
+
+At the end of iteration $j$, the largest $j$ items are correctly sorted in the final $j$ positions of the array.
+
+In the best case of a sorted array, this takes $O(n)$, and $O(n^2)$ otherwise. BubbleSort is stable.
+
+\subsection{Selection Sort}
+\emph{Maintains a sorted prefix, and repeatedly finds the smallest element in the unsorted remainder and swaps it with the first element in the remainder.}
+
+\begin{lstlisting}[
+    mathescape,
+    columns=fullflexible,
+    basicstyle=\fontfamily{lmvtt}\selectfont,
+  ]
+selection_sort(A, n):
+    repeat i in range(n - 1):
+        j = argmin(A[i : n])
+        swap(A[i], A[j])
+\end{lstlisting}
+
+At the end of iteration $i$, the smallest $i$ items are correctly sorted in the final $i$ positions of the array.
+In all cases, this takes $O(n^2)$ comparisons, and is unstable.
+
+\subsection{Insertion Sort}
+\emph{Maintains a sorted prefix, and repeatedly inserts unsorted elements into the correct place in the sorted prefix.}
+
+\begin{lstlisting}[
+    mathescape,
+    columns=fullflexible,
+    basicstyle=\fontfamily{lmvtt}\selectfont,
+  ]
+insertion_sort(A, n):
+    repeat i in range(1, n):
+        key = A[i]
+        j = i - 1
+        while j > 0 and A[j] > key: // insert
+            A[j + 1] = A[j]
+            j = j - 1
+        A[j + 1] = key
+\end{lstlisting}
+
+At the end of iteration $i$, the first $i$ items are in sorted order.
+In the best case of a sorted array, this takes $O(n)$, in the average case of a random permutation $\theta(n^2)$,
+and in the worst case of an inverse sorted array, $O(n^2)$.
+
+InsertionSort is stable as long as we do not swap identical elements.
+
+\subsection{Merge Sort}
+\emph{Using divide-and-conquer, we split the array into halves, recursively sorting both halves and then merging the two.}
+
+\code{merge} takes $n$ iterations to move all elements to a final array, and each iteration takes $O(1)$ time to compare and copy elements.
+This gives a running time of $O(n) = cn$.
+
+We get the recurrence for \code{merge-sort}: \\[0.2em]
+\[ T(n) = \begin{cases} 
+    \theta(1) & \text{if } n = 1 \\
+    2T(n/2) + O(n) & \text{if $n > 1$} \\
+ \end{cases}
+\]
+
+Therefore, we get an overall time complexity of $O(n \log n)$.
+\code{merge} also requires allocating space for the final array, which gives a total space complexity of $O(n \log n)$.
+
+Merge sort is not in-place, but is stable if \code{merge} is implemented properly.
+
+\subsection{Quick Sort}
+\emph{Using divide-and-conquer, we partition the array around a pivot, and then recursively sort the two subarrays.}
+
+If there are no duplicates, we partition the array $A$ into a new array $B$ by using two pointers \code{lo} and \code{hi}
+starting from both ends of the array.
+
+By iterating over $A$, if the element at $A[i]$ is less than the pivot, we copy it to \code{B[lo++]}, or \code{B[hi--]} otherwise.
+
+Two invariants will hold:\\
+$\forall i < \code{lo}, \; \code{B[i]} < \code{pivot}$ and $\forall j > \code{hi}, \; \code{B[j]} > \code{pivot}$.
+
+This implementation of \code{partition} takes $O(n)$ time, but is not in-place.
+
+\subsubsection{In-place Partitioning}
+\begin{lstlisting}[
+    mathescape,
+    columns=fullflexible,
+    basicstyle=\fontfamily{lmvtt}\selectfont,
+  ]
+partition(A, n):
+    swap(pivot, A[0])
+    lo = 1
+    hi = n - 1
+    while lo < hi:
+        while A[lo] < pivot and lo < hi: lo++
+        while A[hi] > pivot and lo < hi: hi--
+        if (lo < hi) swap(A[lo], A[hi])
+    swap(A[lo], A[0])
+    return lo
+\end{lstlisting}
+
+Two invariants will hold at the end of every iteration:\linebreak
+ $\forall i \geq \code{hi}, \; \code{A[i]} > \code{pivot}$ and $\forall \; 1 \leq j < \code{lo}, \; \code{A[j]} < \code{pivot}$.
+
+ \subsubsection{Three-way Partitioning}
+ \emph{Partition an array with duplicates in-place using four regions.}
+
+Three invariants will hold at the end of every iteration:\linebreak
+$\forall \; i < \code{lo}, \; \code{A[i]} < \code{pivot}$\\
+$\forall \; \code{lo} \leq j < \code{mid}, \; \code{A[j]} = \code{pivot}$\\
+$\forall \; k > \code{hi}, \; \code{A[i]} > \code{pivot}$
+
+Regardless of which \code{partition} algorithm is used, \code{quick-sort} is not stable.
+
+It has a recurrence of \code{T(n) = 2T(n/2) + O(n)}. In the worst case (e.g. A[0] pivot), this is $O(n^2)$.
+However, the expected running time with high probability is $O(n \log n)$.

@@ -1,0 +1,75 @@
+\section{Minimum Spanning Trees}
+\emph{An acyclic subset of edges connecting all vertices, with minimum total weight.}
+
+MSTs cannot be used to find shortest paths.
+
+A \textbf{cut} of a graph partitions the vertices into two disjoint subsets.
+An edge crosses a cut if it has one vertex in each of these two subsets.
+
+MSTs have four properties:
+\begin{enumerate}
+    \item MSTs are acyclic.
+    \item If an MST is cut, both subtrees are MSTs.
+    \item For every cycle, the maximum weight edge is not in the MST, but the minimum weight edge may or may not be.
+    \item For every vertex (and cut), the minimum weight edge is in the MST.
+\end{enumerate}
+
+\subsection{Prim's Algorithm}
+We maintain a set $S$ for the vertices in the MST,
+a priority queue $Q$ of vertices ordered by their distance $d$ from the growing MST,
+as well as a parent pointer $\pi(v)$ for each vertex $v$.
+
+We initialize $d(v)$ to $\infty$ for every vertex $v$,
+and start at some arbitrary vertex $s$ such that $S = \{s\}$ and $d(s) = 0$.
+
+Then, we repeatedly dequeue the vertex $u$ with the smallest distance $d$,
+removing it from $Q$ and adding it to $S$.
+
+For every edge $(u, v)$ in the graph, we relax it as so:
+\begin{lstlisting}[
+    mathescape,
+    columns=fullflexible,
+    basicstyle=\fontfamily{lmvtt}\selectfont,
+  ]
+relax(u, v):
+    w = weight(u, v)
+    if d(v) $>$ w:
+        d(v) = Q.decrease_key(u, w) // O(log |V|)
+        $\pi$(v) = u
+\end{lstlisting}
+
+This works because each added edge is the minimum across some cut,
+therefore each edge is in the MST.
+
+Every vertex is only added and removed once from $Q$, taking $O(|V| \log |V|)$ in total.
+
+Each edge is only relaxed once (calling \code{decrease-key}), taking $O(|E| \log |V|)$ in total.
+
+Therefore, this has a time complexity of \textbf{O(E log V)}.
+
+\subsection{Kruskal's Algorithm}
+We will use union-find to keep track of the vertices in the MST.
+
+We sort the edges by weight in ascending order and iterating through them.
+If the edge connects two vertices in the same connected component (with \code{find}), we ignore it.
+Otherwise, we add it to the MST and call \code{union}.
+
+This works because the ignored edge would have been the heaviest edge on the cycle,
+which violates the MST property.
+Also, all other lighter edges have already been considered.
+
+This has a time complexity of \textbf{O(E log V)} since $\log |E| = O(\log |V|^2) = O(2 \log |V|) = O(\log |V|)$.
+
+With integer weights, $O(n)$ counting sort may be used such that the time complexity is improved to $O(|E|)$.
+With a $O(n^2)$ sort, the time complexity is $O(|E|^2)$.
+
+\subsection{Variants}
+If all edge weights are equal, any spanning tree found by DFS or BFS will be an MST since
+both the spanning tree an MSTs have exactly $V - 1$ edges.
+
+Reweighting a graph has no effect on the MST.
+
+A directed MST is a much harder problem, but in the special case with one root, an MST is
+the tree of all edges with the minimum weight, which takes $O(E)$ time.
+
+A maximum spanning tree can be found by negating each edge weight, or by running Kruskal's in reverse.

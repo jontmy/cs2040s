@@ -1,0 +1,23 @@
+\section{Union-Find}
+\emph{An abstract data type for disjoint sets and connected components.}
+
+\code{union} combines two objects, and \code{find} checks whether there is a path between two objects.
+
+A naive implementation associates each object with an identifier.
+\code{find} checks whether their identifiers are the same in $O(1)$.
+\code{union} has to iterate over all identifiers and combine them in $O(n)$.
+
+A better implementation associates each object with a parent.
+\code{find} now checks whether they have the same highest common ancestor (HCA) in $O(n)$.
+\code{union} has to find both their HCAs to link together in $O(n)$.
+
+An optimization using \textbf{weighted union} associates a tree size with each object,
+so \code{union} links the smaller tree to the larger one in $O(\log n)$.
+Since the heights of the trees of size $n$ is at most $\log(n)$, \code{find} takes $O(\log n)$ time.
+
+
+The final optimization adds \textbf{path compression}.
+After each time the root is found, every node on the path is linked to the root.
+Both \code{union} and \code{find} take $O(\alpha(m, n))$ time each for $m$ operations.
+
+With path compression but without weighted union, both \code{union} and \code{find} take $O(\log n)$ time.

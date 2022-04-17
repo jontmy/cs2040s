@@ -1,0 +1,48 @@
+\section{Searching}
+
+\subsection{Binary Search}
+\emph{Find the index of an element in a sorted array if it exists.}
+
+\begin{lstlisting}[
+    mathescape,
+    columns=fullflexible,
+    basicstyle=\fontfamily{lmvtt}\selectfont,
+  ]
+int search(A, key, n):
+    lo = 0
+    hi = n - 1
+    while lo < hi:
+        mid = lo + (hi - lo) / 2
+        if key $\leq$ A[mid]: hi = mid
+        else: lo = mid + 1
+    return A[lo] == key ? lo : -1 
+\end{lstlisting}
+
+$\code{A[lo]} \leq \code{key} \leq \code{A[hi]}$ is a \textbf{loop invariant},
+and on iteration $k$, $\code{hi} - \code{lo} \leq \frac{\code{n}}{2^\code{k}}$.
+
+This has a time complexity of $O(\log n)$.
+
+\subsection{Peak Finding}
+\emph{Find the index of a local maximum in an unsorted array.}
+
+A \textbf{peak} is a local maximum in \code{A} such that $\code{A[i]} \geq \code{A[i-1]}$ and $\code{A[i]} \geq \code{A[i+1]}$.
+We also assume that $\code{A[-1]} = \code{A[n]} = \code{-MAX-INT}$.
+
+\begin{lstlisting}[
+    mathescape,
+    columns=fullflexible,
+    basicstyle=\fontfamily{lmvtt}\selectfont,
+  ]
+int find_peak(A, key, n):
+    if A[n/2 + 1] > A[n/2]:
+        return find_peak(A[n/2 + 1 : n], n/2)
+    else if A[n/2 - 1] > A[n/2]:
+        return find_peak(A[1 : n/2 - 1], n/2)
+    else A[n/2] is a peak:
+        return n/2
+\end{lstlisting}
+
+There will always exist a peak in \code{A[lo:hi]}, and every peak in \code{A[lo:hi]} is a peak in \code{A[1:n]}.
+
+The recurrence relation is $T(n) = T(\frac{n}{2}) + \theta(1)$ which gives a time complexity of $O(\log n)$.

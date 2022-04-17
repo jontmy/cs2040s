@@ -1,0 +1,80 @@
+\section{Hashing}
+
+\subsection{Symbol Table}
+\emph{An abstract data type for key-value pairs with O(1) insertion, search, and deletion. Successor and predeccessor operations are unsupported.}
+
+Implementing a symbol table with an array (direct access table) indexed by integers is impractical for non-integer keys, and uses too much space.
+
+Implementing a symbol with an AVL tree is slow, with lookup operations taking $O(\log n)$.
+
+Furthermore, a dictionary with an AVL tree is a better choice for sorting in $O(n \log n)$ rather than $O(n^2)$ with a symbol table.
+
+\subsubsection{Hash Functions}
+\emph{Given a universe $U$ of possible keys, we need to map them to a smaller number $n$ of actual keys in $m$ buckets.}
+
+A hash function $h: U \mapsto \{ 1, 2, \dots, m \}$ is used to store key $k$ in bucket $h(k)$.
+The time complexity depends on $h$ and bucket access, but is usually assumed to be $O(1)$.
+
+Two distinct keys $k_1$ and $k_2$ \textbf{collide} if $h(k_1) = h(k_2)$.
+It is impossible to choose a hash function that does not collide, due to the \textbf{pigeonhole principle}.
+
+\subsubsection{Chaining}
+\emph{Colliding keys are placed in the same bucket via a linked list.}
+
+For a table of size $m$ and a linked list size of $n$, the total space used is $O(m + n)$.
+
+For a hash function $h$ with cost $\operatorname{cost}(h)$, \code{insert} takes $O(1 + \operatorname{cost}(h))$,
+while \code{search} takes $O(n + \operatorname{cost}(h))$.
+
+By the \textbf{simple uniform hashing assumption} where keys are equally likely to map to every bucket and are mapped independently,
+we can avoid the case where all keys hash to the same bucket.
+
+\textbf{Linearity of expectation} states that $E(A + B) = E(A) + E(B)$.
+So, the expected number of items per bucket is $\frac{n}{m}$.
+
+Therefore \code{search} is $1 + \frac{n}{m} = O(1)$ in expectation, but $O(n)$ in the worst case, and \code{insert} is still $O(1)$.
+
+If we insert $n$ items, the expected maximum cost is $O(\log n)$ and actually $\theta(\frac{\log n}{\log \log n})$.
+
+\subsubsection{Open Addressing}
+\emph{On collision, probe a sequence of buckets until we find an empty one.}
+
+We re-define $h$ as $h(key, i) : U \mapsto \{ 1, 2, \dots, m \}$.
+
+However, we cannot simply \code{null} items in \code{delete}, and instead use a \textbf{tombstone value}
+which allows \code{insert} to overwrite it.
+
+A good $h(k, i)$ must enumerate all possible values buckets, such that for every bucket $j$ there is some $i$ such that $h(k, i) = j$,
+meaning it is some permutation of $\{ 1, 2, \dots, m \}$.
+Otherwise, it would wrongly declare a table to be full even when there is stil space.
+
+This is true for \textbf{linear probing}.
+However, LP does not obey the UHA (not SUHA!) where every key is equally likely to map to every permutation,
+independent of other keys, due to \textbf{clustering}.
+
+When the table is $\frac{1}{4}$ full, clusters of size $\theta(\log n)$ form which ruins $O(1)$ performance.
+For a load $\alpha = \frac{n}{m}$, assuming uniform hashing, each operation is expected to take $\leq \frac{1}{1 - \alpha}$.
+
+With \textbf{double hashing}, $h(k, i) = f(k) + i \cdot g(k) \!\!\! \mod{m}$, if $g(k)$ has no common factors with $m$ other than 1,
+then $h(k, i)$ hits all buckets.
+
+Open addressing saves space, rarely allocates, and has better cache performance,
+but is more sensitive to hash function choice and load.
+
+\subsection{Table Resizing}
+\emph{If a hash table is too small, there are too many collisions, and if it is too large, we waste space.}
+
+Upon resizing from sizes $m_1$ to $m_2$, we need to choose a new hash function $h$ re-compute all $n$ hashes, and copy them over.
+This takes $O(m_1 + m_2 + n)$.
+
+If we increment table size by 1, this takes $O(n)$, meaning \code{insert} takes $O(n)$.
+
+If we double table sizes, each resize costs $O(n)$, but the average cost of insertion is now $O(1)$.
+Squaring works as well, but space usage is inefficient.
+
+\subsubsection{Amortization}
+\emph{An operation has amortized cost $T(n)$ if $\forall k \in \mathbb{Z}^+$, the cost of $k$ operations $\leq k \cdot T(n)$.}
+
+Therefore, resize tables only if $n = m$, then $m = 2m$ and if $n < \frac{m}{4}$, then $m = \frac{m}{2}$.
+
+In another example, incrementing a binary counter takes amortized $O(\log n)$ time.
