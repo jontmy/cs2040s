@@ -46,3 +46,25 @@ int find_peak(A, key, n):
 There will always exist a peak in \code{A[lo:hi]}, and every peak in \code{A[lo:hi]} is a peak in \code{A[1:n]}.
 
 The recurrence relation is $T(n) = T(\frac{n}{2}) + \theta(1)$ which gives a time complexity of $O(\log n)$.
+
+\subsection{Quick Select}
+\emph{Find the k-th smallest element in an unsorted array.}
+
+Instead of sorting the entire array, we only do the minimum amount of sorting needed by recursing
+once on the correct side of a pivot. Recursing on both sides is Quick Sort!
+
+\begin{lstlisting}[
+    mathescape,
+    columns=fullflexible,
+    basicstyle=\fontfamily{lmvtt}\selectfont,
+  ]
+quick_select(A, l, r, k):
+  loop
+      if l = r: return A[left]
+      pivot = partition(A, l, r, random(l, r))
+      if k = pivot: return A[k]
+      else if k < pivot: r = pivot - 1
+      else: l = p + 1
+\end{lstlisting}
+
+This has a time complexity of $O(n)$.

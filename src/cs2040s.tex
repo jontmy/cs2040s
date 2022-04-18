@@ -84,6 +84,9 @@
 % Remove enumerate spacing with [leftmargin=*]
 \usepackage{enumitem}
 
+% Drawing trees
+\usepackage[linguistics]{forest}
+
 
 \title{\vspace{-1cm}\textbf{CS2040S \\[0.25em] Data Structures and Algorithms} \\[2em] \Large AY2021/22 Semester 2 \\[1em]}
 \author{Notes by Jonathan Tay}
@@ -99,9 +102,10 @@
 
     \newpage
     \begin{multicols*}{2}
-        \input{searching.tex}
         \input{sorting.tex}
+        \input{searching.tex}
         \input{hashing.tex}
+        \input{trees.tex}
         \input{graphs.tex}
         \input{shortest-paths.tex}
         \input{union-find.tex}
