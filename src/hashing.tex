@@ -46,7 +46,7 @@ which allows \code{insert} to overwrite it.
 
 A good $h(k, i)$ must enumerate all possible values buckets, such that for every bucket $j$ there is some $i$ such that $h(k, i) = j$,
 meaning it is some permutation of $\{ 1, 2, \dots, m \}$.
-Otherwise, it would wrongly declare a table to be full even when there is stil space.
+Otherwise, it would wrongly declare a table to be full even when there is still space.
 
 This is true for \textbf{linear probing}.
 However, LP does not obey the UHA (not SUHA!) where every key is equally likely to map to every permutation,

@@ -158,8 +158,105 @@ After an \code{insert}, at most 2 rotations are needed, but \code{delete} may re
 This is because \code{delete} reduces height and rotations reduce height, so it is not sufficient to only fix
 the lowest imbalanced node in the tree.
 
+\subsection{Dynamic Order Statistics}
+\emph{A tree data structure supporting not only insertion and deletion, but also selecting the k-th element.}
+
+Augment a balanced tree with \textbf{weight} information $w$ on each node (not rank!):\\[-0.2em]
+\[ w(\code{v}) = \begin{cases} 
+    0 & \text{if $v$ is a leaf} \\
+    w(\code{v.left}), \; w(\code{v.right}) + 1 & \text{otherwise} \\
+ \end{cases}
+\]
+
+\begin{lstlisting}[
+    mathescape,
+    columns=fullflexible,
+    basicstyle=\fontfamily{lmvtt}\selectfont,
+  ]
+select(k):
+    rank = v.left.weight + 1
+    if k = rank: return v;
+    elif k < rank: return v.left.select(k)
+    else k > rank: return v.right.select(k - rank)
+
+rank(v):
+    rank = v.left.weight + 1
+    while v is not null:
+        if v is left child: do nothing
+        else: rank += v.parent.left.weight + 1
+        v = v.parent
+    return rank
+\end{lstlisting}
+
+Weights need to be updated with every rotation caused by \code{insert} and \code{delete}.
 
 \subsection{Dictionary}
 \emph{An abstract data type akin to a symbol table, but with support for successor and predecessor queries.}
 
 Implemented with balanced trees.
+
+\subsection{Interval Trees}
+\emph{A binary tree data structure where every node is an interval, and the tree is ordered by the lower bound of the interval.}
+
+We will need to augment each node with the \textbf{maximum upper bound} of the intervals in both subtrees,
+and also update this after every rotation.
+
+\begin{lstlisting}[
+    mathescape,
+    columns=fullflexible,
+    basicstyle=\fontfamily{lmvtt}\selectfont,
+  ]
+interval_search(x):
+    while c is not null and x is not in c.interval:
+        if c.left is null: c = c.right
+        elif x > c.left.max: c = c.right
+        else c = c.left
+    return c.interval
+
+all_overlaps(x):
+    repeat until no more intervals:
+        interval = interval_search(x)
+        add interval to list
+        delete interval from tree
+    add all intervals back to tree
+\end{lstlisting}
+
+\code{interval-search} takes $O(\log n)$ time, and \code{all-overlaps} takes $O(k \log n)$ time.
+
+\subsection{Range Trees}
+\emph{A binary tree data structure supporting orthogoanl range searching to determine the number of points within a range.}
+
+Unlike regular trees, range trees store points only in the leaves, and internal nodes store the largest value of its left subtree.
+
+\begin{lstlisting}[
+    mathescape,
+    columns=fullflexible,
+    basicstyle=\fontfamily{lmvtt}\selectfont,
+  ]
+find_split(lo, hi):
+    v = root
+    loop:
+        if hi $\leq$ v.key: v = v.left
+        elif lo > v.key: v = v.right
+        else: break
+    return v
+\end{lstlisting}
+
+For a 1D range query, once the split node is found with \code{find-split},
+we traverse both the left and right subtrees as long as they are within the \code{lo-hi} range.
+
+An invariant is that the search interval for a left-traversal at node $v$ includes the maximum item in the subtree rooted at $v$.
+
+This takes $O(k + \log n)$ time, where $k$ is the number of points found.
+However, it takes $O(n \log n)$ time to pre-process (build) the tree, and $O(n)$ space.
+
+If we instead only wanted to know the number of points within a range,
+we only need to augment the tree with the number of nodes in each subtree rather
+than traversing entire subtrees.
+
+This generalizes to $d$-dimensions by storing a $d-1$-dimensional range tree in each node
+of a 1D range tree and constructing the $d-1$-dimensional range tree recursively.
+
+However, rotations take $O(n)$, so we don't support \code{insert} and \code{delete}.
+In general, queries take $O(\log^d n + k)$, building the tree takes $O(n \log^{d-1} n)$, and
+the tree takes $O(n \log^{d-1} n)$ space.
