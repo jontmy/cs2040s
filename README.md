@@ -1,14 +1,12 @@
-# CS2109S #
+# CS2040S #
 
-## Introduction to Artificial Intelligence and Machine Learning ##
+## Data Structures and Algorithms ##
 
-> This module introduces basic concepts in Artificial Intelligence (AI) and Machine Learning (ML). It adopts the perspective that planning, games, and learning are related types of search problems, and examines the underlying issues, challenges and techniques. Planning/games related topics include tree/graph search, A* search, local search, and adversarial search (e.g., games). Learning related topics include supervised and unsupervised learning, model validation, and neural networks.
-
-This repository contains my personal notes for each topic covered by CS2109S. **Tutorials, problem sets, and module content in general will *not* be uploaded here.**
+> This module introduces students to the design and implementation of fundamental data structures and algorithms. The module covers basic data structures (linked lists, stacks, queues, hash tables, binary heaps, trees, and graphs), searching and sorting algorithms, and basic analysis of algorithms.
 
 ## Links ##
 
-The compiled LaTeX document can be found [here](https://github.com/jontmy/nus-cs2109s/blob/master/src/cs2109s.pdf).
+The compiled LaTeX document can be found [here](https://github.com/jontmy/nus-cs2040s/blob/master/src/cs2040s.pdf).
 
 ## Schedule ##
 
@@ -30,6 +28,4 @@ The compiled LaTeX document can be found [here](https://github.com/jontmy/nus-cs
 
 ## Additional Resources ##
 
-[**Artificial Intelligence: A Modern Approach, 4th ed.**](http://aima.cs.berkeley.edu/) — Course textbook.
-
-[**aima-python**](https://github.com/aimacode/aima-python) — Python implementation of the pseudocode in the textbook.
+[**Algorithms, 4th ed.**](https://algs4.cs.princeton.edu/home/) — Course textbook.
