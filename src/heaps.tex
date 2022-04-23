@@ -1,0 +1,29 @@
+\section{Binary Heaps}
+A \textbf{complete binary tree} is a binary tree where there are $2^i$ nodes at depth $i$
+except the last level which is \textbf{left-justified}.
+
+A binary heap is implemented with an \emph{implicit data structure} without pointers,
+using a \textbf{heap array}.
+
+To access children of node $i$, we use index arithmetic:
+the left child is at index $2i+1$,
+and the right child is at index $2i+2$.
+To access the parent: $\lfloor \frac{i-1}{2} \rfloor$.
+
+The \textbf{Max-Heap property} states that the key of every vertex is greater than or equal to the values of its children.
+
+\code{insert} appends a new node to the heap array, 
+and calls \code{swim} to swap the node upward with its ancestors until it is in the correct position.
+
+\code{delete-max} swaps the last node in the heap array with the root, 
+and calls \code{sink} to swap the root downward with the larger of its descendants until it is in the correct position.
+
+Both \code{insert} and \code{delete-max} are $O(\log n)$ time.
+
+\code{build} can be done in $O(n)$ time if we start from the end of the array and only use \code{sink}.
+
+\subsection{Priority Queue}
+\emph{An abstract data structure is a queue with elements served in order of their assigned priorities.}
+
+A binary heap is an implementation for a priority queue which must be a complete binary tree and 
+obeys the MaxHeap property.
