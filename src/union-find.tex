@@ -15,9 +15,9 @@ An optimization using \textbf{weighted union} associates a tree size with each o
 so \code{union} links the smaller tree to the larger one in $O(\log n)$.
 Since the heights of the trees of size $n$ is at most $\log(n)$, \code{find} takes $O(\log n)$ time.
 
-
 The final optimization adds \textbf{path compression}.
 After each time the root is found, every node on the path is linked to the root.
-Both \code{union} and \code{find} take $O(\alpha(m, n))$ time each for $m$ operations.
+Both \code{union} and \code{find} take $O(\alpha(m, n))$ amortized time each for $m$ operations,
+and $O(\log n)$ in the worst case.
 
 With path compression but without weighted union, both \code{union} and \code{find} take $O(\log n)$ time.
