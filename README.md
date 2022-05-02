@@ -17,11 +17,11 @@ The compiled LaTeX document can be found [here](https://github.com/jontmy/nus-cs
 | Hashing                                    | ✓          |
 | Heaps                                      | ✓          |
 | Trees                                      | ✓          |
-| Graphs                                     |            |
-| Shortest Paths                             |            |
-| Union-Find                                 |            |
-| Minimum Spanning Trees                     |            |
-| Dynamic Programming                        |            |
+| Graphs                                     | ✓          |
+| Shortest Paths                             | ✓          |
+| Union-Find                                 | ✓          |
+| Minimum Spanning Trees                     | ✓          |
+| Dynamic Programming                        | ✓          |
 
 ## Additional Resources ##
 
