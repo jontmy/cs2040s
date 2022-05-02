@@ -8,23 +8,20 @@
 
 The compiled LaTeX document can be found [here](https://github.com/jontmy/nus-cs2040s/blob/master/src/cs2040s.pdf).
 
-## Schedule ##
+## Topics ##
 
-| **Week** | **Content**                                | **Status** |
-|:--------:|--------------------------------------------|:----------:|
-| 1        | Introduction to Artificial Intelligence    | ✓          |
-| 2        | Uninformed Search                          | ✓          |
-| 3        | Informed Search                            | ✓          |
-| 4        | Adversarial Search                         | ✓          |
-| 5        | Introduction to Machine Learning           | ✓          |
-| 6        | Multi-variable Linear Regression           |            |
-| 7        | —                                          |            |
-| 8        | Classification: Logistic Regression        |            |
-| 9        | Introduction to Neural Networks            |            |
-| 10       | Back Propagation                           |            |
-| 11       | More Neural Networks                       |            |
-| 12       | Unsupervised Learning                      |            |
-| 13       | AI and Ethics                              |            |
+| **Content**                                | **Status** |
+|--------------------------------------------|:----------:|
+| Sorting                                    | ✓          |
+| Searching                                  | ✓          |
+| Hashing                                    | ✓          |
+| Heaps                                      | ✓          |
+| Trees                                      | ✓          |
+| Graphs                                     |            |
+| Shortest Paths                             |            |
+| Union-Find                                 |            |
+| Minimum Spanning Trees                     |            |
+| Dynamic Programming                        |            |
 
 ## Additional Resources ##
 
