@@ -260,3 +260,41 @@ of a 1D range tree and constructing the $d-1$-dimensional range tree recursively
 However, rotations take $O(n)$, so we don't support \code{insert} and \code{delete}.
 In general, queries take $O(\log^d n + k)$, building the tree takes $O(n \log^{d-1} n)$, and
 the tree takes $O(n \log^{d-1} n)$ space.
+
+\subsection{(a, b) Trees}
+The value for $a$ is constrained: $2 \leq a \leq \frac{b + 1}{2}$.
+
+Nodes in $(a, b)$-trees can store \textbf{multiple keys}, where $a - 1 \leq n_{\text{keys}} \leq b - 1$, with the exception
+of the root node which may have 1 key at minimum.
+
+Therefore, internal nodes have between $a$ and $b$ children inclusive, leaf nodes have none, and the root node can have
+at least 2 and at most $b$ children.
+
+We can see that every non-leaf node must have one more child than its number of keys.
+These keys must be in sorted ascending order, and form a \textbf{key range}.
+
+For a non-leaf node with $k$ keys $v_1, v_2, \dots v_k$ and $k + 1$ children $t_1, t_2, \dots t_{k+1}$:
+
+$\forall v \in t_1, \; v \leq v_1$ \\
+$\forall v \in t_{k+1}, \; v > v_k$ \\
+$\forall i \in [2, k], \; \forall v \in t_i, \; v \in (v_{i-1}, v_i]$
+
+Additionally, all leaf nodes must be at the same depth.
+
+\textbf{B-trees} are simply $(B, 2B)$-trees.
+
+\code{search} is trivial: descend through sub-trees by comparing the key with the node's key range.
+
+\code{insert} is trivial unless there is an overflow, in which case we \code{split} the node and insert the new key.
+
+\code{split} takes the median key in a node and conjoins it with its parent, and the keys to the left and right
+of the median key become its children. The parent might overflow, and if so we \code{split} it again, and so on.
+
+\code{delete} swaps the node to be deleted with its predecessor's or successor's leaf, before deleting.
+Then, the leaf node may become underfull. If the sibling can donate one key, we move the parent's key
+down and the sibling's key up. Otherwise, we \code{merge} both siblings.
+
+\code{merge} moves the parent down between the two children and conjoins all of them into one node.
+The parent might become underfull, and if so we \code{merge} its parent, and so on.
+
+All operations take $O(\log n)$ time.
